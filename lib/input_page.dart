@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart'; 
 import 'icon_content.dart';
@@ -12,6 +14,7 @@ class _InputPageState extends State<InputPage> {
   Color maleCardColor=inactiveCardColor;
   Color femaleCardColor=inactiveCardColor;
   int ?height=170;
+  int ?weight=60;
   
   void updateColour(int gender){
     if(gender==1){
@@ -34,14 +37,18 @@ class _InputPageState extends State<InputPage> {
       body:Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-        Expanded(child:Row(children: [
+        Expanded(child:Row(
+          
+          children: [
           Expanded(child:GestureDetector
           (onTap:(){
 setState(() {
   updateColour(1);
 });
           },
-            child: ReusableCard(colour:maleCardColor,cardChild: IconContent(d:Icons.male,gender:"MALE"),
+            child: Center(
+              child: ReusableCard(colour:maleCardColor,cardChild: IconContent(d:Icons.male,gender:"MALE"),
+              ),
             ))),
           Expanded(child:GestureDetector(
             onTap:(){
@@ -87,7 +94,28 @@ updateColour(2);
         ],),
         ) ),
         Expanded(child:Row(children: [
-          Expanded(child:ReusableCard(colour:activeCardColor)),
+          Expanded(child:ReusableCard(colour:activeCardColor,
+          cardChild: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('WEIGHT',
+              style: TextStyle(fontSize:20.0,
+              fontWeight:FontWeight.w400,),
+              ),
+                Text(weight.toString(),
+              style: TextStyle(fontSize:40.0,
+              fontWeight:FontWeight.w900,),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RoundIconButton(icon:Icons.add),
+                  SizedBox(width: 10,),
+                  RoundIconButton(icon:Icons.add),
+                ],
+              ),
+              ],),
+          )),
           Expanded(child:ReusableCard(colour:activeCardColor) ),
         ],)),
       Container(
@@ -98,5 +126,23 @@ updateColour(2);
     );
   }
 }
+class RoundIconButton extends StatelessWidget {
+  RoundIconButton({required this.icon});
+  final IconData icon;
 
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+      child:Icon(icon),
+      elevation: 6.0,
+      constraints: BoxConstraints.tightFor(
+        width:56.0,
+        height:56.0,
+    ),
+      shape:CircleBorder(),
+      fillColor:Color(0xFF4C4F5E),
+      onPressed: (){},
+    );
+  }
+}
 
